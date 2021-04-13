@@ -59,7 +59,8 @@ async function action(payload) {
     reportName,
   });
   core.setOutput("comment", comment);
-  await addComment(pullRequestNumber, comment, reportName);
+  const commentResult = await addComment(pullRequestNumber, comment, reportName);
+  core.setOutput("html_url", commentResult.html_url);
 }
 
 function markdownReport(reports, commit, options) {
@@ -171,8 +172,9 @@ async function addComment(pullRequestNumber, body, reportName) {
       body: body,
       ...github.context.repo,
     });
+    return comment;
   } else {
-    await client.issues.createComment({
+    return await client.issues.createComment({
       issue_number: pullRequestNumber,
       body: body,
       ...github.context.repo,
