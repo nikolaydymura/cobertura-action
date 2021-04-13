@@ -58,6 +58,7 @@ async function action(payload) {
     filteredFiles: changedFiles,
     reportName,
   });
+  core.setOutput("comment", comment);
   await addComment(pullRequestNumber, comment, reportName);
 }
 
